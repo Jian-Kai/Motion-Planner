@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>GRA Final</title>
+</head>
+
+<body>
+</body>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+<script>
+    var data;
+    var oReq = new XMLHttpRequest();
+    oReq.onload = reqListener;
+    var qurl = "index";
+    console.log(qurl);
+    oReq.open("get", qurl, false);
+    oReq.send();
+
+    function reqListener() {
+        if (true) {
+            data = JSON.parse(this.responseText);
+            if (data.error) {
+                alert(data.error.message);
+                return false;
+            }
+        }
+    }
+
+    var robot = data.robot;
+    var obstacle = data.obstacle;
+    console.log(obstacle);
+    console.log(robot);
+
+    //=================================set svg init=============================
+    var height = 400,
+        width = 400;
+    var svg = d3.select("body")
+        .append("svg")
+        .attr("width", width)
+        .attr("height", height);
+
+    var scale = d3.scale.linear()
+        .range([0, width])
+        .domain([0, 128]);
+
+    //================================Set robot points to Svg===================
+
+    function robot2svg(robot) {
+        var robot_points = [];
+        for (var k = 0; k < robot.length; k++) {
+            var point = [];
+            var theta = (parseFloat(robot[k].initaial[2])) * (Math.PI / 180);
+            var init = [parseFloat(robot[k].initaial[0]), parseFloat(robot[k].initaial[1])];
+
+            var polygons = robot[k].polygon;
+            for (var i = 0; i < polygons.length; i++) {
+                var temp = "";
+                for (var j = 0; j < polygons[i].length; j++) {
+                    //console.log(parseFloat(polygons[i][j][0]));
+                    //console.log(parseFloat(polygons[i][j][1]));
+                    var x = Math.cos(theta) * parseFloat(polygons[i][j][0]) - Math.sin(theta) * parseFloat(polygons[i][j][1]) + init[0];
+                    var y = Math.sin(theta) * parseFloat(polygons[i][j][0]) + Math.cos(theta) * parseFloat(polygons[i][j][1]) + init[1];
+                    if (j == polygons[i].length - 1) {
+                        temp += scale(x) + "," + scale(y);
+                    } else {
+                        temp += scale(x) + "," + scale(y) + " ";
+                    }
+                }
+                point.push(temp);
+            }
+            robot_points.push(point);
+        }
+
+        return robot_points;
+    }
+    var robot_list = robot2svg(robot);
+    console.log(robot_list);
+
+    //=====================Set obstacle points to Svg===========================
+    function obstacle2svg(obstacle) {
+        var obstacle_points = [];
+        for (var k = 0; k < obstacle.length; k++) {
+            var point = [];
+            var theta = (parseFloat(obstacle[k].initaial[2])) * (Math.PI / 180);
+            var init = [parseFloat(obstacle[k].initaial[0]), parseFloat(obstacle[k].initaial[1])];
+            var polygons = obstacle[k].polygon;
+            for (var i = 0; i < polygons.length; i++) {
+                var temp = "";
+                for (var j = 0; j < polygons[i].length; j++) {
+                    //console.log(parseFloat(polygons[i][j][0]));
+                    //console.log(parseFloat(polygons[i][j][1]));
+                    var x = Math.cos(theta) * parseFloat(polygons[i][j][0]) - Math.sin(theta) * parseFloat(polygons[i][j][1]) + init[0];
+                    var y = Math.sin(theta) * parseFloat(polygons[i][j][0]) + Math.cos(theta) * parseFloat(polygons[i][j][1]) + init[1];
+                    if (j == polygons[i].length - 1) {
+                        temp += scale(x) + "," + scale(y);
+                    } else {
+                        temp += scale(x) + "," + scale(y) + " ";
+                    }
+                }
+                point.push(temp);
+            }
+            obstacle_points.push(point);
+        }
+        return obstacle_points;
+    }
+    var obstacle_list = robot2svg(obstacle);
+    console.log(obstacle_list);
+
+
+    //================================draw robot points in Svg==================
+
+    for (var i = 0; i < robot_list.length; i++) {
+        var point = [];
+        for (var j = 0; j < robot_list[i].length; j++) {
+            for (var k = 0; k < robot_list[i][j].length; k++) {
+                point.push(robot_list[i][j][k]);
+            }
+        }
+        //console.log(point);
+        //point = robot_points[i][j];
+        //drawrobot(point);
+    }
+    var robotarray = []; //已設定成標籤形式的robot
+    for (var i = 0; i < robot_list.length; i++) {
+        for (var j = 0; j < robot_list[i].length; j++) {
+            var robotpolygon = {
+                "robot": robot_list[i][j],
+                "order": i
+            };
+            robotarray.push(robotpolygon);
+        }
+    }
+
+    //drawrobot(robotarray);
+
+    var select = [],
+        start; //選定robot以及滑鼠移動的開始點
+
+    function drawrobot(robot) {
+
+        console.log(robot);
+        var graph = svg.selectAll("ploygon")
+            .data(robot)
+            .enter()
+            .append("polyline")
+            .attr("points", function(d) {
+                return d.robot;
+            })
+            .attr("id", function(d) {
+                return "robot" + d.order;
+            })
+            .attr("stroke", "black")
+            .attr("stroke-width", 2)
+            .on("mousedown", function() {
+                start = d3.mouse(svg.node());
+                console.log(this.id);
+
+                var together = document.getElementsByTagName("polyline"); //select tag is polyline
+                for (var i = 0; i < together.length; i++) {
+                    if (together[i].id == this.id) {
+                        select.push(together[i]);
+                    }
+                }
+                console.log(select);
+            })
+            .on("mousemove", function() {
+                var m = d3.mouse(svg.node());
+                if (!select || !start) return;
+                for (var i = 0; i < select.length; i++) {
+                    for (var j = 0; j < select[i].points.length; j++) {
+                        select[i].points[j].x += m[0] - start[0];
+                        select[i].points[j].y += m[1] - start[1];
+                    }
+                }
+                start = m;
+            })
+            .on("mouseup", function() {
+                select = [];
+                start = null;
+            });
+    }
+
+    //=====================draw obstacle points in Svg==========================
+
+    for (var i = 0; i < obstacle_list.length; i++) {
+        var point = [];
+        for (var j = 0; j < obstacle_list[i].length; j++) {
+            for (var k = 0; k < obstacle_list[i][j].length; k++) {
+                point.push(obstacle_list[i][j][k]);
+            }
+        }
+        //console.log(point);
+        //point = robot_points[i][j];
+        //drawrobot(point);
+    }
+    var obstaclearray = []; //已設定成標籤形式的robot
+    for (var i = 0; i < obstacle_list.length; i++) {
+        for (var j = 0; j < obstacle_list[i].length; j++) {
+            var obstaclepolygon = {
+                "obstacle": obstacle_list[i][j],
+                "order": i
+            };
+            obstaclearray.push(obstaclepolygon);
+        }
+    }
+
+    //drawobstacle(obstaclearray);
+
+    function drawobstacle(obstacle) {
+
+        console.log(obstacle);
+        var graph = svg.selectAll("ploygon")
+            .data(obstacle)
+            .enter()
+            .append("polyline")
+            .attr("points", function(d) {
+                return d.obstacle;
+            })
+            .attr("id", function(d) {
+                return "obstacle" + d.order;
+            })
+            .attr("fill", "red")
+
+    }
+
+    //===================draw robot and obstacle================================
+    drawobstacle(obstaclearray);
+    drawrobot(robotarray);
+
+</script>

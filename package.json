@@ -1,0 +1,21 @@
+{
+  "name": "GRA",
+  "description": "GRA Final",
+  "version": "0.1.0",
+  "author": "jainkaiguo",
+  "private": true,
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "async": "*",
+    "express": ">=3.4.8",
+    "fbgraph": "*",
+    "mongodb": "*"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  }
+}
