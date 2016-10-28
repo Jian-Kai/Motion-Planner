@@ -43,11 +43,15 @@ function readrobot(filename) {
     var string = ' ';
     for (var i = 0; i < data.length; i++) {
         if (data[i] === '\n') {
+          string += ' ';
             string_array.push(string);
             string = ' ';
         } else {
-            if (data[i] === '\r')
-                string += ' ';
+            if (data[i] == '\r')
+            {
+              //console.log('speace');
+              string += ' ';
+              }
             else
                 string += data[i];
         }
@@ -67,7 +71,7 @@ function readrobot(filename) {
     var robotlist = -1;
     //console.log(robot_number);
     for (var i = 2; i < string_array.length; i++) {
-        if (string_array[i] == ' # number of polygons ') {
+        if (string_array[i].match('# number of polygons') != null) {
             robotlist++;
             robot_array[robotlist] = {
                 polygon: [],
@@ -133,10 +137,11 @@ function readobstacle(filename) {
     var string = ' ';
     for (var i = 0; i < data.length; i++) {
         if (data[i] === '\n') {
+          string += ' ';
             string_array.push(string);
             string = ' ';
         } else {
-            if (data[i] === '\r')
+            if (data[i] === ' ')
                 string += ' ';
             else
                 string += data[i];
@@ -155,7 +160,7 @@ function readobstacle(filename) {
     var obstaclelist = -1;
     //console.log(obstacle_number);
     for (var i = 2; i < string_array.length; i++) {
-        if (string_array[i].match(' # number of polygons ') != null) {
+        if (string_array[i].match('# number of polygons') != null) {
             obstaclelist++;
             obstacle_array[obstaclelist] = {
                 polygon: [],
@@ -261,7 +266,7 @@ function robotcheak(data) {
                         vertice = [];
                         for (var k = 1; k < temp[j].length + 1; k++) {
                             if (temp[j][k] === ' ') {
-                                vertice.push(pos);
+                                vertice.push(parseFloat(pos));
                                 pos = '';
                             } else if (k == temp[j].length) {
                                 temp[j] = vertice;

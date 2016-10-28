@@ -1,12 +1,15 @@
 function hiderobot() {
+  console.log(robot);
     if (showrobot) {
+        robot_list = robot2svg(robot);
+        robotarray = robotarraylist(robot_list);
         drawrobot(robotarray);
         showrobot = false;
-        document.getElementById("robotbotton").innerHTML = "Hide robot";
+        document.getElementById("robotbutton").innerHTML = "Hide robot";
     } else {
         d3.selectAll(".robot").remove();
         showrobot = true;
-        document.getElementById("robotbotton").innerHTML = "Show robot";
+        document.getElementById("robotbutton").innerHTML = "Show robot";
     }
 }
 
@@ -14,10 +17,10 @@ function hideobstacle() {
     if (showobstacle) {
         drawobstacle(obstaclearray);
         showobstacle = false;
-        document.getElementById("obstaclebotton").innerHTML = "Hide obstacle";
+        document.getElementById("obstaclebutton").innerHTML = "Hide obstacle";
     } else {
         d3.selectAll(".obstacle").remove();
         showobstacle = true;
-        document.getElementById("obstaclebotton").innerHTML = "Show obstacle";
+        document.getElementById("obstaclebutton").innerHTML = "Show obstacle";
     }
 }
