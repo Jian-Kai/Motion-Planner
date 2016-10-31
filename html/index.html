@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <title>GRA Final</title>
 </head>
@@ -20,8 +21,8 @@
     <button id="bitmapbutton" onclick="open_bitmap()">Open Bitmap</button>
   </div>
 
-  <svg id = "main"></svg>
-  <svg id = "bitmap"></svg>
+  <svg id="main"></svg>
+  <svg id="bitmap"></svg>
 
   <script src="http://d3js.org/d3.v3.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
@@ -98,6 +99,7 @@
       console.log(robot_points);
       return robot_points;
     }
+
     var robot_list = robot2svg(robot);
     //console.log(robot_list);
 
@@ -218,36 +220,42 @@
     }
 
     //=====================draw obstacle points in Svg==========================
+    var obstaclearray = obstaclearraylist(obstacle_list);
 
-    for (var i = 0; i < obstacle_list.length; i++) {
-      var point = [];
-      for (var j = 0; j < obstacle_list[i].length; j++) {
-        for (var k = 0; k < obstacle_list[i][j].length; k++) {
-          point.push(obstacle_list[i][j][k]);
+    function obstaclearraylist(obstacle_list) {
+        var obstaclearray = [];
+      for (var i = 0; i < obstacle_list.length; i++) {
+        var point = [];
+        for (var j = 0; j < obstacle_list[i].length; j++) {
+          for (var k = 0; k < obstacle_list[i][j].length; k++) {
+            point.push(obstacle_list[i][j][k]);
+          }
+        }
+        //console.log(point);
+        //point = robot_points[i][j];
+        //drawrobot(point);
+      }
+      var obstaclearray = []; //已設定成標籤形式的robot
+      for (var i = 0; i < obstacle_list.length; i++) {
+        for (var j = 0; j < obstacle_list[i].length; j++) {
+          var obstaclepolygon = {
+            "obstacle": obstacle_list[i][j],
+            "order": i
+          };
+          obstaclearray.push(obstaclepolygon);
         }
       }
-      //console.log(point);
-      //point = robot_points[i][j];
-      //drawrobot(point);
+      return obstaclearray;
     }
-    var obstaclearray = []; //已設定成標籤形式的robot
-    for (var i = 0; i < obstacle_list.length; i++) {
-      for (var j = 0; j < obstacle_list[i].length; j++) {
-        var obstaclepolygon = {
-          "obstacle": obstacle_list[i][j],
-          "order": i
-        };
-        obstaclearray.push(obstaclepolygon);
-      }
-    }
+
 
     //drawobstacle(obstaclearray);
 
-    function drawobstacle(obstacle) {
+    function drawobstacle(obstacledata) {
 
-      console.log(obstacle);
+      console.log(obstacledata);
       var graph = svg.selectAll("ploygon")
-        .data(obstacle)
+        .data(obstacledata)
         .enter()
         .append("polyline")
         .attr("points", function(d) {
@@ -256,7 +264,40 @@
         .attr("id", function(d) {
           return "obstacle" + d.order;
         })
-        .attr("class", "obstacle");
+        .attr("class", "obstacle")
+        .on("mousedown", function() {
+          start = d3.mouse(svg.node());
+          console.log(this.id);
+          that = obstacle[this.id[this.id.length - 1]];
+          console.log(that);
+          var together = document.getElementsByTagName("polyline"); //select tag is polyline
+          for (var i = 0; i < together.length; i++) {
+            if (together[i].id == this.id) {
+              select.push(together[i]);
+            }
+          }
+          console.log(select);
+        })
+        .on("mousemove", function() {
+          var m = d3.mouse(svg.node());
+          if (!select || !start) return;
+          for (var i = 0; i < select.length; i++) {
+            for (var j = 0; j < select[i].points.length; j++) {
+              select[i].points[j].x += m[0] - start[0];
+              select[i].points[j].y += m[1] - start[1];
+            }
+          }
+          that.initaial[0] = parseFloat(that.initaial[0]) + (scale.invert(m[0] - start[0]));
+          that.initaial[1] = parseFloat(that.initaial[1]) + (scale.invert(m[1] - start[1]));
+
+          console.log(that);
+          start = m;
+        })
+        .on("mouseup", function() {
+          select = [];
+          that = [];
+          start = null;
+        });
     }
 
     //===================draw robot and obstacle============================

@@ -1,6 +1,8 @@
 
 
 function open_bitmap() {
+
+  d3.selectAll("circle").remove();
   var n = 129,
     white = 254,
     black = 255,
@@ -33,7 +35,7 @@ function open_bitmap() {
 
 
   for(var i = 0; i < obstacle_bitlist.length; i++){
-    
+
     for(var j = 0; j < obstacle_bitlist[i].length; j++){
 
       var y_list = [];
@@ -90,66 +92,6 @@ function open_bitmap() {
     }
   }
 
-
-/*
-  var maxX = null, minX = null, maxY = null, minY = null;
-
-  for(var k = 0; k < obstacle_bitlist[1][0].length; k++){
-    if(k == obstacle_bitlist[1][0].length - 1){
-      scanline(obstacle_bitlist[1][0][k].x, obstacle_bitlist[1][0][k].y, obstacle_bitlist[1][0][0].x, obstacle_bitlist[1][0][0].y);
-    }
-    else{
-      scanline(obstacle_bitlist[1][0][k].x, obstacle_bitlist[1][0][k].y, obstacle_bitlist[1][0][k + 1].x, obstacle_bitlist[1][0][k + 1].y);
-    }
-
-    if(maxX == null){
-      maxX = obstacle_bitlist[1][0][k].x;
-      minX = obstacle_bitlist[1][0][k].x;
-      maxY = obstacle_bitlist[1][0][k].y;
-      minY = obstacle_bitlist[1][0][k].y;
-    }
-
-    if(obstacle_bitlist[1][0][k].x > maxX){
-      maxX = obstacle_bitlist[1][0][k].x;
-    }
-    else if(obstacle_bitlist[1][0][k].x < minX){
-      minX = obstacle_bitlist[1][0][k].x;
-    }
-
-    if(obstacle_bitlist[1][0][k].y > maxY){
-      maxY = obstacle_bitlist[1][0][k].y;
-    }
-    else if(obstacle_bitlist[1][0][k].y < minY){
-      minY = obstacle_bitlist[1][0][k].Y;
-    }
-
-  }
-  maxX = Math.floor(maxX);
-  maxY = Math.floor(maxY);
-  minX = Math.floor(minX);
-  minY = Math.floor(minY);
-
-  console.log(maxX);
-  console.log(maxY);
-  console.log(minX);
-  console.log(minY);
-  var scan = [];
-  for(var i = minX; i <= maxX; i++){
-    scan = [];
-    for(var j = 0; j < y_list.length; j++){
-      if(y_list[j][0] == i){
-        scan.push(y_list[j][1]);
-      }
-    }
-    console.log(scan);
-    var y0 = Math.min(...scan), y1 = Math.max(...scan);
-
-    drewline(i, y0, i, y1, black);
-  }
-*/
-
-
-  //console.log(y_list);
 
   //=====================================draw bitmap==================================
   var bitmap = d3.select("#bitmap")
