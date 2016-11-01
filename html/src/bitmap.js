@@ -2,7 +2,7 @@
 
 function open_bitmap() {
 
-  d3.selectAll("circle").remove();
+  d3.selectAll("rect").remove();
   var n = 128,
     white = 254,
     black = 255,
@@ -39,7 +39,7 @@ function open_bitmap() {
     for(var j = 0; j < obstacle_bitlist[i].length; j++){
 
       var y_list = [];
-      var maxX = null, minX = null;
+      var maxX = null, minX = null, maxY = null, minY = null;
       for(var k = 0; k < obstacle_bitlist[i][j].length; k++){
 
         if(k == obstacle_bitlist[i][j].length - 1){
@@ -53,6 +53,9 @@ function open_bitmap() {
           maxX = obstacle_bitlist[i][j][k].x;
           minX = obstacle_bitlist[i][j][k].x;
 
+          maxY = obstacle_bitlist[i][j][k].y;
+          minY = obstacle_bitlist[i][j][k].y;
+
         }
 
         if(obstacle_bitlist[i][j][k].x > maxX){
@@ -62,10 +65,20 @@ function open_bitmap() {
           minX = obstacle_bitlist[i][j][k].x;
         }
 
+        if(obstacle_bitlist[i][j][k].y > maxY){
+          maxY = obstacle_bitlist[i][j][k].y;
+        }
+        else if(obstacle_bitlist[i][j][k].y < minY){
+          minY = obstacle_bitlist[i][j][k].y;
+        }
+
       }
 
       maxX = Math.floor(maxX);
       minX = Math.floor(minX);
+
+      maxY = Math.floor(maxY);
+      minY = Math.floor(minY);
 
       var scan = [];
       for(var q = minX; q <= maxX; q++){
@@ -76,22 +89,33 @@ function open_bitmap() {
           }
         }
         var y0 = Math.min(...scan), y1 = Math.max(...scan);
-        drewline(q, y0, q, y1, black);
+        drewlineY(q, y0, q, y1, black);
+      }
+
+      for(var q = minY; q <= maxY; q++){
+        scan = [];
+        for(var w = 0; w < y_list.length; w++){
+          if(y_list[w][0] == q){
+            scan.push(y_list[1][w]);
+          }
+        }
+        var x0 = Math.min(...scan), x1 = Math.max(...scan);
+        drewlineX(x0, q, x1, q, black);
       }
     }
   }
   //=============================NF1 Algorithm===================================
   var L = [], count = 0;
 
-  L[0] = [robotgoal[0]];
+  L[0] = [robotgoal[1]];
   //L[0] = robotgoal;
 
   while(L[count].length != 0){
     var temp = [];
-    //console.log(L[i]);
+    //console.log(L[count].length);
       for(var a = 0; a < L[count].length; a++){
         var point = L[count][a];
-        /*for(var x = -1; x <= 1; x++){
+        for(var x = -1; x <= 1; x++){
           var posX = point[0] + x;
           for(var y = -1; y<= 1; y++){
             var posY = point[1] + y;
@@ -102,8 +126,8 @@ function open_bitmap() {
               }
             }
           }
-        }*/
-        for(var t = -1; t <= 1; t+=2){
+        }
+      /*for(var t = -1; t <= 1; t+=2){
           var posX = point[0] + t , posY = point[1] + t;
           if(posX > -1 && posY > -1 && posX < n && posY < n){
             if(bitmatrix[posX][point[1]] == 254){
@@ -115,14 +139,14 @@ function open_bitmap() {
               temp.push([point[0], posY]);
             }
           }
-        }
+        }*/
       }
       //console.log(point);
 
     L[count + 1] = temp;
     count++;
   }
-  console.log(L);
+  //console.log(L);
 
   //=====================================draw bitmap==================================
   var bitmap = d3.select("#bitmap")
@@ -130,23 +154,26 @@ function open_bitmap() {
     .attr("height", n)
     .attr("transform", 'translate(100, -20)');
 
-  var dot = bitmap.selectAll("circle");
+  var dot = bitmap.selectAll("rect");
 
   for(var i = 0; i < bitmatrix.length; i++){
     for(var j = 0; j < bitmatrix[i].length; j++){
+
       if(bitmatrix[i][j] == 0){
+
         var bit = [i, j];
         //console.log(bit);
         dot.data([bit])
         .enter()
-        .append("circle")
-        .attr("cx", function(d){
+        .append("rect")
+        .attr("x", function(d){
           return d[0];
         })
-        .attr("cy", function(d){
+        .attr("y", function(d){
           return d[1];
         })
-        .attr("r", 1)
+        .attr("width", 1)
+        .attr("height", 1)
         .style("fill", 'red');
       }
       else if(bitmatrix[i][j] == 255){
@@ -154,29 +181,32 @@ function open_bitmap() {
         //console.log(bit);
         dot.data([bit])
         .enter()
-        .append("circle")
-        .attr("cx", function(d){
+        .append("rect")
+        .attr("x", function(d){
           return d[0];
         })
-        .attr("cy", function(d){
+        .attr("y", function(d){
           return d[1];
         })
-        .attr("r", 1)
+        .attr("width", 1)
+        .attr("height", 1)
         .style("fill", 'black');
       }
       else if(bitmatrix[i][j] < 254){
+        //console.log(bitmatrix[i][j]);
         var bit = [i, j];
         //console.log(bit);
         dot.data([bit])
         .enter()
-        .append("circle")
-        .attr("cx", function(d){
+        .append("rect")
+        .attr("x", function(d){
           return d[0];
         })
-        .attr("cy", function(d){
+        .attr("y", function(d){
           return d[1];
         })
-        .attr("r", 1)
+        .attr("width", 1)
+        .attr("height", 1)
         /*.style("fill", function(d){
           if(bitmatrix[d[0]][d[1]] % 2 == 0){
               return "rgb(0,0,0)";
@@ -185,7 +215,7 @@ function open_bitmap() {
             return "rgb(255,255,255)";
           }
         });*/
-        .style('fill', "rgb("+ (255 - bitmatrix[i][j]) +","+ (255 - bitmatrix[i][j]) +"," + (255 - bitmatrix[i][j]) +")");
+        .style('fill', "rgb("+ (255 - bitmatrix[i][j] * 2) +","+ (255 - bitmatrix[i][j] * 2) +"," + (255 - bitmatrix[i][j] * 2) +")");
       }
     }
   }
@@ -203,10 +233,16 @@ function open_bitmap() {
     }
   }
 
-  function drewline(x0, y0, x1, y1, color){
+  function drewlineY(x0, y0, x1, y1, color){
     for(var i = y0; i <= y1 ; i++){
       //y_list.push([Math.floor(x0+i*dx), Math.floor(y0+i*dy)]);
       bitmatrix[x0][i] = color;
+    }
+  }
+  function drewlineX(x0, y0, x1, y1, color){
+    for(var i = x0; i <= x1 ; i++){
+      //y_list.push([Math.floor(x0+i*dx), Math.floor(y0+i*dy)]);
+      bitmatrix[i][y0] = color;
     }
   }
 
