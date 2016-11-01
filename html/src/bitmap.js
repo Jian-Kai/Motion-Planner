@@ -33,13 +33,13 @@ function open_bitmap() {
   var obstacle_bitlist = obstacle2bitmap(obstacle);
   console.log(obstacle_bitlist);
 
-
+  //=========================birmap init========================================
   for(var i = 0; i < obstacle_bitlist.length; i++){
 
     for(var j = 0; j < obstacle_bitlist[i].length; j++){
 
       var y_list = [];
-      var maxX = null, minX = null, maxY = null, minY = null;
+      var maxX = null, minX = null;
       for(var k = 0; k < obstacle_bitlist[i][j].length; k++){
 
         if(k == obstacle_bitlist[i][j].length - 1){
@@ -52,8 +52,7 @@ function open_bitmap() {
         if(maxX == null){
           maxX = obstacle_bitlist[i][j][k].x;
           minX = obstacle_bitlist[i][j][k].x;
-          maxY = obstacle_bitlist[i][j][k].y;
-          minY = obstacle_bitlist[i][j][k].y;
+
         }
 
         if(obstacle_bitlist[i][j][k].x > maxX){
@@ -63,19 +62,10 @@ function open_bitmap() {
           minX = obstacle_bitlist[i][j][k].x;
         }
 
-        if(obstacle_bitlist[i][j][k].y > maxY){
-          maxY = obstacle_bitlist[i][j][k].y;
-        }
-        else if(obstacle_bitlist[i][j][k].y < minY){
-          minY = obstacle_bitlist[i][j][k].Y;
-        }
-
       }
 
       maxX = Math.floor(maxX);
-      maxY = Math.floor(maxY);
       minX = Math.floor(minX);
-      minY = Math.floor(minY);
 
       var scan = [];
       for(var q = minX; q <= maxX; q++){
@@ -85,13 +75,38 @@ function open_bitmap() {
             scan.push(y_list[w][1]);
           }
         }
-        console.log(scan);
         var y0 = Math.min(...scan), y1 = Math.max(...scan);
         drewline(q, y0, q, y1, black);
       }
     }
   }
-
+  //=============================NF1 Algorithm===================================
+  var L = [], i = 0;
+  L[0] = (robotgoal);
+  //console.log(L[0]);
+  //L[1] = [];
+  //console.log(L[1].length);
+  while(L[i].length != 0){
+  //while(i < 10){
+    var temp = [];
+    //console.log(L[i]);
+    L[i].forEach(function(point){
+      //console.log(point);
+      for(var x = -1; x <= 1 ; x++){
+        for(var y = -1; y<= 1 ; y++){
+          var posX = point[0] + x, posY = point[1] + y;
+          if(posX > -1 && posY > -1 && posX < n && posY < n){
+            if(bitmatrix[posX][posY] == 254){
+              bitmatrix[posX][posY] = i + 1;
+              temp.push([posX, posY]);
+            }
+          }
+        }
+      }
+    })
+    L[i + 1] = temp;
+    i++;
+  }
 
   //=====================================draw bitmap==================================
   var bitmap = d3.select("#bitmap")
@@ -116,7 +131,7 @@ function open_bitmap() {
           return d[1];
         })
         .attr("r", 1)
-        .style("fill", 'red')
+        .style("fill", 'red');
       }
       else if(bitmatrix[i][j] == 255){
         var bit = [i, j];
@@ -131,10 +146,26 @@ function open_bitmap() {
           return d[1];
         })
         .attr("r", 1)
-        .style("fill", 'black')
+        .style("fill", 'black');
+      }
+      else if(bitmatrix[i][j] < 254){
+        var bit = [i, j];
+        //console.log(bit);
+        dot.data([bit])
+        .enter()
+        .append("circle")
+        .attr("cx", function(d){
+          return d[0];
+        })
+        .attr("cy", function(d){
+          return d[1];
+        })
+        .attr("r", 1)
+        .style("fill", 'rgb('+ (255 - bitmatrix[i][j] * 2)+', ' + (255 - bitmatrix[i][j] * 2) +', '+ (255 - bitmatrix[i][j] * 2) +')');
       }
     }
   }
+
 
   function scanline(x0, y0, x1, y1){
     var d, dx, dy;
@@ -149,11 +180,6 @@ function open_bitmap() {
   }
 
   function drewline(x0, y0, x1, y1, color){
-    /*var d, dx, dy;
-    d = (Math.max(Math.abs(x1-x0), Math.abs(y1-y0)));
-    dy = (y1 - y0) / d;
-    dx = (x1 - x0) / d;*/
-
     for(var i = y0; i <= y1 ; i++){
       //y_list.push([Math.floor(x0+i*dx), Math.floor(y0+i*dy)]);
       bitmatrix[x0][i] = color;
