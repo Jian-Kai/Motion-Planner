@@ -3,7 +3,7 @@
 function open_bitmap() {
 
   d3.selectAll("circle").remove();
-  var n = 129,
+  var n = 128,
     white = 254,
     black = 255,
     goal = 0;
@@ -81,32 +81,48 @@ function open_bitmap() {
     }
   }
   //=============================NF1 Algorithm===================================
-  var L = [], i = 0;
-  L[0] = (robotgoal);
-  //console.log(L[0]);
-  //L[1] = [];
-  //console.log(L[1].length);
-  while(L[i].length != 0){
-  //while(i < 10){
+  var L = [], count = 0;
+
+  L[0] = [robotgoal[0]];
+  //L[0] = robotgoal;
+
+  while(L[count].length != 0){
     var temp = [];
     //console.log(L[i]);
-    L[i].forEach(function(point){
-      //console.log(point);
-      for(var x = -1; x <= 1 ; x++){
-        for(var y = -1; y<= 1 ; y++){
-          var posX = point[0] + x, posY = point[1] + y;
+      for(var a = 0; a < L[count].length; a++){
+        var point = L[count][a];
+        /*for(var x = -1; x <= 1; x++){
+          var posX = point[0] + x;
+          for(var y = -1; y<= 1; y++){
+            var posY = point[1] + y;
+            if(posX > -1 && posY > -1 && posX < n && posY < n){
+              if(bitmatrix[posX][posY] == 254){
+                bitmatrix[posX][posY] = count + 1;
+                temp.push([posX, posY]);
+              }
+            }
+          }
+        }*/
+        for(var t = -1; t <= 1; t+=2){
+          var posX = point[0] + t , posY = point[1] + t;
           if(posX > -1 && posY > -1 && posX < n && posY < n){
-            if(bitmatrix[posX][posY] == 254){
-              bitmatrix[posX][posY] = i + 1;
-              temp.push([posX, posY]);
+            if(bitmatrix[posX][point[1]] == 254){
+              bitmatrix[posX][point[1]] = count + 1;
+              temp.push([posX, point[1]]);
+            }
+            if(bitmatrix[point[0]][posY] == 254){
+              bitmatrix[point[0]][posY] = count + 1;
+              temp.push([point[0], posY]);
             }
           }
         }
       }
-    })
-    L[i + 1] = temp;
-    i++;
+      //console.log(point);
+
+    L[count + 1] = temp;
+    count++;
   }
+  console.log(L);
 
   //=====================================draw bitmap==================================
   var bitmap = d3.select("#bitmap")
@@ -161,7 +177,15 @@ function open_bitmap() {
           return d[1];
         })
         .attr("r", 1)
-        .style("fill", 'rgb('+ (255 - bitmatrix[i][j] * 2)+', ' + (255 - bitmatrix[i][j] * 2) +', '+ (255 - bitmatrix[i][j] * 2) +')');
+        /*.style("fill", function(d){
+          if(bitmatrix[d[0]][d[1]] % 2 == 0){
+              return "rgb(0,0,0)";
+          }
+          else{
+            return "rgb(255,255,255)";
+          }
+        });*/
+        .style('fill', "rgb("+ (255 - bitmatrix[i][j]) +","+ (255 - bitmatrix[i][j]) +"," + (255 - bitmatrix[i][j]) +")");
       }
     }
   }
