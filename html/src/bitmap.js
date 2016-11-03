@@ -147,7 +147,7 @@ function open_bitmap() {
     count++;
   }
   //console.log(L);
-  BFS(robotinit[0], bitmatrix, robotgoal[0]);
+  bitmatrix = BFS(robotinit[0], bitmatrix, robotgoal[0]);
 
   //=====================================draw bitmap==================================
   var bitmap = d3.select("#bitmap")
@@ -190,8 +190,24 @@ function open_bitmap() {
           })
           .attr("width", 1)
           .attr("height", 1)
-          .style("fill", 'black');
-      } else if (bitmatrix[i][j] < 254) {
+          .style("fill", 'red');
+      }else if (bitmatrix[i][j] == 256) {
+        var bit = [i, j];
+        //console.log(bit);
+        dot.data([bit])
+          .enter()
+          .append("rect")
+          .attr("x", function(d) {
+            return d[0];
+          })
+          .attr("y", function(d) {
+            return d[1];
+          })
+          .attr("width", 1)
+          .attr("height", 1)
+          .style("fill", 'green');
+      }
+      else if (bitmatrix[i][j] < 254) {
         //console.log(bitmatrix[i][j]);
         var bit = [i, j];
         //console.log(bit);
@@ -271,6 +287,7 @@ function obstacle2bitmap(obstacle) {
 function BFS(init, bitmatrix, goal) {
   console.log(init);
   console.log(goal);
+  init  = [80, 1];
   var markmap = [];
   for (var i = 0; i < 128; i++) {
     markmap[i] = [];
@@ -317,6 +334,24 @@ function BFS(init, bitmatrix, goal) {
   if (success) {
     console.log(open);
     console.log(opencount);
+    var path = [];
+    for(var i = 0; i < open[open.length-1].length; i++){
+      if(open[open.length-1][i][0] == goal[0] && open[open.length-1][i][1] == goal[1]){
+        path.push(open[open.length-1][i]);
+      }
+    }
+    var count = 0;
+    while (path[count].length == 3) {
+      path.push(open[path[count][2]][0]);
+      count++;
+    }
+    console.log(path);
+    for(var i = 0; i < path.length; i++){
+      //console.log(path[i]);
+      bitmatrix[path[i][0]][path[i][1]] = 256;
+    }
+
+    return bitmatrix;
   }
 
   function first() {
