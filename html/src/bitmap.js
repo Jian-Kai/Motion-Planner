@@ -304,6 +304,7 @@ function BFS(init, bitmatrix, goal) {
   while (!success) {
     opencount++;
     var x = first();
+    console.log(x);
     //open[opencount+1] ;
     //console.log(opencount);
 
@@ -311,19 +312,21 @@ function BFS(init, bitmatrix, goal) {
       var posX = x[0] + t,
         posY = x[1] + t;
       if (posX > -1 && posY > -1 && posX < 128 && posY < 128) {
+
+        if (bitmatrix[x[0]][posY] < 255 && !markmap[x[0]][posY]) {
+          var xp = [x[0], posY, opencount];
+          open[opencount + 1].push(xp);
+          markmap[x[0]][posY] = true;
+          if (x[0] == goal[0] && posY == goal[1]) {
+            success = true;
+          }
+        }
+
         if (bitmatrix[posX][x[1]] < 255 && !markmap[posX][x[1]]) {
           var xp = [posX, x[1], opencount];
           open[opencount + 1].push(xp);
           markmap[posX][x[1]] = true;
           if (posX == goal[0] && x[1] == goal[1]) {
-            success = true;
-          }
-        }
-        if (bitmatrix[x[0]][posY] < 255 && !markmap[x[0]][posY]) {
-          var xp = [x[0], posY, opencount];
-          open[opencount + 1].push(xp);
-          markmap[posX][x[1]] = true;
-          if (x[0] == goal[0] && posY == goal[1]) {
             success = true;
           }
         }
@@ -359,10 +362,11 @@ function BFS(init, bitmatrix, goal) {
     var field = bitmatrix[open[opencount][0][0]][open[opencount][0][1]];
     var index = 0,
       pos = [open[opencount][0][0], open[opencount][0][1]];
-    for (var i = 1; i < open[opencount].length; i++) {
+      //console.log(open[opencount].length);
+    for (var i = 0 ; i < open[opencount].length; i++) {
       if (bitmatrix[open[opencount][i][0]][open[opencount][i][1]] < field) {
         field = bitmatrix[open[opencount][i][0]][open[opencount][i][1]];
-        pos = [open[opencount][i][0], open[opencount][i][1]]
+        pos = [open[opencount][i][0], open[opencount][i][1]];
         index = i;
       }
     }
