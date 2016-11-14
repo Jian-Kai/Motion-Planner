@@ -70,49 +70,6 @@
       .attr("width", width)
       .attr("height", height)
       .attr("class", "main")
-      .on("mousemove", function() {
-        if(!cheak){
-          var m = d3.mouse(svg.node());
-          if (!select || !start) return;
-          for (var i = 0; i < select.length; i++) {
-            for (var j = 0; j < select[i].points.length; j++) {
-              select[i].points[j].x += m[0] - start[0];
-              select[i].points[j].y += m[1] - start[1];
-            }
-          }
-          that.initaial[0] = parseFloat(that.initaial[0]) + (scale.invert(m[0] - start[0]));
-          that.initaial[1] = parseFloat(that.initaial[1]) + (scale.invert(m[1] - start[1]));
-
-          //console.log(that);
-          start = m;
-        }
-        else{
-          var m = d3.mouse(svg.node());
-          if (!select || !start) return;
-          var dx = m[0] - start[0], dy = m[1] - start[1];
-          var rotation = (Math.atan2(dy / 2,dx / 2))/Math.PI*180;
-          var Wrotation = rotation * (Math.PI / 180);
-          for (var i = 0; i < select.length; i++) {
-            for (var j = 0; j < select[i].points.length; j++) {
-              var x = (select[i].points[j].x - scale(that.initaial[0])) * Math.cos(Wrotation) - (select[i].points[j].y - scale(that.initaial[1])) * Math.sin(Wrotation) ;
-              var y = (select[i].points[j].x - scale(that.initaial[0])) * Math.sin(Wrotation) + (select[i].points[j].y - scale(that.initaial[1])) * Math.cos(Wrotation) ;
-              select[i].points[j].x = x + scale(that.initaial[0]);
-              select[i].points[j].y = y + scale(that.initaial[1]);
-            }
-          }
-          console.log(rotation);
-          that.initaial[2] = parseFloat(that.initaial[2]) + rotation;
-          //console.log(that);
-          start = m;
-        }
-
-      })
-      .on("mouseup", function() {
-        select = [];
-        that = [];
-        cheak = false;
-        start = null;
-      })
       .on('contextmenu', function(){
         d3.event.preventDefault();
       });
@@ -161,6 +118,7 @@
       for (var k = 0; k < obstacle.length; k++) {
         var point = [];
         var theta = (parseFloat(obstacle[k].initaial[2])) * (Math.PI / 180);
+        //console.log(theta/(Math.PI / 180));
         var init = [parseFloat(obstacle[k].initaial[0]), parseFloat(obstacle[k].initaial[1])];
         var polygons = obstacle[k].polygon;
         for (var i = 0; i < polygons.length; i++) {
@@ -319,7 +277,14 @@
         })
         .attr("class", "obstacle")
         .on("mousedown", function() {
-          console.log("left");
+          if(window.event.button == 2){
+            console.log("right");
+            cheak = true;
+          }
+          else{
+            console.log("left");
+            cheak = false;
+          }
           start = d3.mouse(svg.node());
           //console.log(this.id);
           that = obstacle[this.id[this.id.length - 1]];
@@ -334,6 +299,7 @@
         })
         .on("mousemove", function() {
           if(!cheak){
+            //console.log("left");
             var m = d3.mouse(svg.node());
             if (!select || !start) return;
             for (var i = 0; i < select.length; i++) {
@@ -349,21 +315,25 @@
             start = m;
           }
           else{
+            //console.log("right");
             var m = d3.mouse(svg.node());
             if (!select || !start) return;
-            var dx = m[0] - start[0], dy = m[1] - start[1];
-            var rotation = (Math.atan2(dy / 2,dx / 2))/Math.PI*180;
-            var Wrotation = rotation * (Math.PI / 180);
+            //var dx = m[0] - start[0], dy = m[1] - start[1];
+            var pre = [start[0]-scale(that.initaial[0]), start[1]-scale(that.initaial[1])];
+            var cur = [m[0]-scale(that.initaial[0]), m[1]-scale(that.initaial[1])];
+            var rotation = Math.atan2(cur[1], cur[0]) - Math.atan2(pre[1], pre[0]);
+            var Wrotation = rotation / (Math.PI / 180);
             for (var i = 0; i < select.length; i++) {
               for (var j = 0; j < select[i].points.length; j++) {
-                var x = (select[i].points[j].x - scale(that.initaial[0])) * Math.cos(Wrotation) - (select[i].points[j].y - scale(that.initaial[1])) * Math.sin(Wrotation) ;
-                var y = (select[i].points[j].x - scale(that.initaial[0])) * Math.sin(Wrotation) + (select[i].points[j].y - scale(that.initaial[1])) * Math.cos(Wrotation) ;
+                var x = (select[i].points[j].x - scale(that.initaial[0])) * Math.cos(rotation) - (select[i].points[j].y - scale(that.initaial[1])) * Math.sin(rotation) ;
+                var y = (select[i].points[j].x - scale(that.initaial[0])) * Math.sin(rotation) + (select[i].points[j].y - scale(that.initaial[1])) * Math.cos(rotation) ;
+
                 select[i].points[j].x = x + scale(that.initaial[0]);
                 select[i].points[j].y = y + scale(that.initaial[1]);
               }
             }
-            console.log(rotation);
-            that.initaial[2] = parseFloat(that.initaial[2]) + rotation;
+            console.log(Wrotation);
+            that.initaial[2] = parseFloat(that.initaial[2]) + Wrotation;
             //console.log(that);
             start = m;
           }
@@ -372,13 +342,8 @@
         .on("mouseup", function() {
           select = [];
           that = [];
-          cheak = false;
+          cheak = null;
           start = null;
-        })
-        .on('contextmenu', function(){
-          d3.event.preventDefault();
-          console.log("right");
-          cheak = true;
         });
     }
 
