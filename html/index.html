@@ -5,12 +5,17 @@
   <title>GRA Final</title>
 </head>
 <style>
-  .robot {
+  polyline.robot {
+    cursor: move;
     fill: black;
   }
 
-  .obstacle {
+  polyline.obstacle {
+    cursor: move;
     fill: red;
+  }
+  .main{
+    cursor: move;
   }
 </style>
 
@@ -63,7 +68,54 @@
       width = 400;
     var svg = d3.select("#main")
       .attr("width", width)
-      .attr("height", height);
+      .attr("height", height)
+      .attr("class", "main")
+      .on("mousemove", function() {
+        if(!cheak){
+          var m = d3.mouse(svg.node());
+          if (!select || !start) return;
+          for (var i = 0; i < select.length; i++) {
+            for (var j = 0; j < select[i].points.length; j++) {
+              select[i].points[j].x += m[0] - start[0];
+              select[i].points[j].y += m[1] - start[1];
+            }
+          }
+          that.initaial[0] = parseFloat(that.initaial[0]) + (scale.invert(m[0] - start[0]));
+          that.initaial[1] = parseFloat(that.initaial[1]) + (scale.invert(m[1] - start[1]));
+
+          //console.log(that);
+          start = m;
+        }
+        else{
+          var m = d3.mouse(svg.node());
+          if (!select || !start) return;
+          var dx = m[0] - start[0], dy = m[1] - start[1];
+          var rotation = (Math.atan2(dy / 2,dx / 2))/Math.PI*180;
+          var Wrotation = rotation * (Math.PI / 180);
+          for (var i = 0; i < select.length; i++) {
+            for (var j = 0; j < select[i].points.length; j++) {
+              var x = (select[i].points[j].x - scale(that.initaial[0])) * Math.cos(Wrotation) - (select[i].points[j].y - scale(that.initaial[1])) * Math.sin(Wrotation) ;
+              var y = (select[i].points[j].x - scale(that.initaial[0])) * Math.sin(Wrotation) + (select[i].points[j].y - scale(that.initaial[1])) * Math.cos(Wrotation) ;
+              select[i].points[j].x = x + scale(that.initaial[0]);
+              select[i].points[j].y = y + scale(that.initaial[1]);
+            }
+          }
+          console.log(rotation);
+          that.initaial[2] = parseFloat(that.initaial[2]) + rotation;
+          //console.log(that);
+          start = m;
+        }
+
+      })
+      .on("mouseup", function() {
+        select = [];
+        that = [];
+        cheak = false;
+        start = null;
+      })
+      .on('contextmenu', function(){
+        d3.event.preventDefault();
+      });
 
     var scale = d3.scale.linear()
       .range([0, width])
@@ -168,6 +220,7 @@
 
     var select = [],
       that = [],
+      cheak = false,
       start; //選定robot以及滑鼠移動的開始點
 
     function drawrobot(robotdata) {
@@ -266,37 +319,66 @@
         })
         .attr("class", "obstacle")
         .on("mousedown", function() {
+          console.log("left");
           start = d3.mouse(svg.node());
-          console.log(this.id);
+          //console.log(this.id);
           that = obstacle[this.id[this.id.length - 1]];
-          console.log(that);
+          //console.log(that);
           var together = document.getElementsByTagName("polyline"); //select tag is polyline
           for (var i = 0; i < together.length; i++) {
             if (together[i].id == this.id) {
               select.push(together[i]);
             }
           }
-          console.log(select);
+          //console.log(select);
         })
         .on("mousemove", function() {
-          var m = d3.mouse(svg.node());
-          if (!select || !start) return;
-          for (var i = 0; i < select.length; i++) {
-            for (var j = 0; j < select[i].points.length; j++) {
-              select[i].points[j].x += m[0] - start[0];
-              select[i].points[j].y += m[1] - start[1];
+          if(!cheak){
+            var m = d3.mouse(svg.node());
+            if (!select || !start) return;
+            for (var i = 0; i < select.length; i++) {
+              for (var j = 0; j < select[i].points.length; j++) {
+                select[i].points[j].x += m[0] - start[0];
+                select[i].points[j].y += m[1] - start[1];
+              }
             }
-          }
-          that.initaial[0] = parseFloat(that.initaial[0]) + (scale.invert(m[0] - start[0]));
-          that.initaial[1] = parseFloat(that.initaial[1]) + (scale.invert(m[1] - start[1]));
+            that.initaial[0] = parseFloat(that.initaial[0]) + (scale.invert(m[0] - start[0]));
+            that.initaial[1] = parseFloat(that.initaial[1]) + (scale.invert(m[1] - start[1]));
 
-          console.log(that);
-          start = m;
+            //console.log(that);
+            start = m;
+          }
+          else{
+            var m = d3.mouse(svg.node());
+            if (!select || !start) return;
+            var dx = m[0] - start[0], dy = m[1] - start[1];
+            var rotation = (Math.atan2(dy / 2,dx / 2))/Math.PI*180;
+            var Wrotation = rotation * (Math.PI / 180);
+            for (var i = 0; i < select.length; i++) {
+              for (var j = 0; j < select[i].points.length; j++) {
+                var x = (select[i].points[j].x - scale(that.initaial[0])) * Math.cos(Wrotation) - (select[i].points[j].y - scale(that.initaial[1])) * Math.sin(Wrotation) ;
+                var y = (select[i].points[j].x - scale(that.initaial[0])) * Math.sin(Wrotation) + (select[i].points[j].y - scale(that.initaial[1])) * Math.cos(Wrotation) ;
+                select[i].points[j].x = x + scale(that.initaial[0]);
+                select[i].points[j].y = y + scale(that.initaial[1]);
+              }
+            }
+            console.log(rotation);
+            that.initaial[2] = parseFloat(that.initaial[2]) + rotation;
+            //console.log(that);
+            start = m;
+          }
+
         })
         .on("mouseup", function() {
           select = [];
           that = [];
+          cheak = false;
           start = null;
+        })
+        .on('contextmenu', function(){
+          d3.event.preventDefault();
+          console.log("right");
+          cheak = true;
         });
     }
 

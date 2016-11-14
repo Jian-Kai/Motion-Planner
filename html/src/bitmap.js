@@ -40,7 +40,7 @@ function open_bitmap() {
   var obstacle_bitlist = obstacle2bitmap(obstacle);
   console.log(obstacle_bitlist);
 
-  //=========================birmap init========================================
+  //=========================bitmap init========================================
   for (var i = 0; i < obstacle_bitlist.length; i++) {
 
     for (var j = 0; j < obstacle_bitlist[i].length; j++) {
@@ -191,7 +191,7 @@ function open_bitmap() {
           .attr("width", 1)
           .attr("height", 1)
           .style("fill", 'red');
-      }else if (bitmatrix[i][j] == 256) {
+      } else if (bitmatrix[i][j] == 256) {
         var bit = [i, j];
         //console.log(bit);
         dot.data([bit])
@@ -206,8 +206,7 @@ function open_bitmap() {
           .attr("width", 1)
           .attr("height", 1)
           .style("fill", 'green');
-      }
-      else if (bitmatrix[i][j] < 254) {
+      } else if (bitmatrix[i][j] < 254) {
         //console.log(bitmatrix[i][j]);
         var bit = [i, j];
         //console.log(bit);
@@ -287,7 +286,7 @@ function obstacle2bitmap(obstacle) {
 function BFS(init, bitmatrix, goal) {
   console.log(init);
   console.log(goal);
-  init  = [80, 1];
+  init = [10, 1];
   var markmap = [];
   for (var i = 0; i < 128; i++) {
     markmap[i] = [];
@@ -304,7 +303,7 @@ function BFS(init, bitmatrix, goal) {
   while (!success) {
     opencount++;
     var x = first();
-    console.log(x);
+    //console.log(x);
     //open[opencount+1] ;
     //console.log(opencount);
 
@@ -338,9 +337,9 @@ function BFS(init, bitmatrix, goal) {
     console.log(open);
     console.log(opencount);
     var path = [];
-    for(var i = 0; i < open[open.length-1].length; i++){
-      if(open[open.length-1][i][0] == goal[0] && open[open.length-1][i][1] == goal[1]){
-        path.push(open[open.length-1][i]);
+    for (var i = 0; i < open[open.length - 1].length; i++) {
+      if (open[open.length - 1][i][0] == goal[0] && open[open.length - 1][i][1] == goal[1]) {
+        path.push(open[open.length - 1][i]);
       }
     }
     var count = 0;
@@ -349,7 +348,7 @@ function BFS(init, bitmatrix, goal) {
       count++;
     }
     console.log(path);
-    for(var i = 0; i < path.length; i++){
+    for (var i = 0; i < path.length; i++) {
       //console.log(path[i]);
       bitmatrix[path[i][0]][path[i][1]] = 256;
     }
@@ -362,14 +361,21 @@ function BFS(init, bitmatrix, goal) {
     var field = bitmatrix[open[opencount][0][0]][open[opencount][0][1]];
     var index = 0,
       pos = [open[opencount][0][0], open[opencount][0][1]];
-      //console.log(open[opencount].length);
-    for (var i = 0 ; i < open[opencount].length; i++) {
+    //console.log(open[opencount].length);
+    for (var i = 0; i < open[opencount].length; i++) {
       if (bitmatrix[open[opencount][i][0]][open[opencount][i][1]] < field) {
         field = bitmatrix[open[opencount][i][0]][open[opencount][i][1]];
         pos = [open[opencount][i][0], open[opencount][i][1]];
         index = i;
       }
     }
+    var count = 0,
+      length = open[opencount].length;
+    while (count > 100) {
+      var order = random(length);
+      count++;
+    }
+
     var temp = [];
     for (var i = 1; i < open[opencount].length; i++) {
       if (i != index) {
@@ -382,6 +388,11 @@ function BFS(init, bitmatrix, goal) {
     //console.log(open[opencount +1]);
 
     return pos;
+  }
+
+  function random(number) {
+
+    return number;
   }
 
 }
