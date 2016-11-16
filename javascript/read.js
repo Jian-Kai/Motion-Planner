@@ -43,7 +43,7 @@ function readrobot(filename) {
     var string = ' ';
     for (var i = 0; i < data.length; i++) {
         if (data[i] === '\n') {
-          string += ' ';
+          //string += ' ';
             string_array.push(string);
             string = ' ';
         } else {
