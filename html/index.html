@@ -29,6 +29,7 @@
     <button id="robotbutton" onclick="hiderobot()">Hide robot</button>
     <button id="obstaclebutton" onclick="hideobstacle()">Hide obstacle</button>
     <button id="bitmapbutton" onclick="open_bitmap()">Open Bitmap</button>
+    <!--<button id="BFS" onclick="BFS()">BFS</button>-->
   </div>
 
   <svg id="main"></svg>
@@ -40,6 +41,7 @@
 
   <script src='./src/button.js'></script>
   <script src='./src/bitmap.js'></script>
+  <script src='./src/BFS.js'></script>
 
   <script>
     var data;
@@ -49,7 +51,6 @@
     console.log(qurl);
     oReq.open("get", qurl, false);
     oReq.send();
-
     function reqListener() {
       if (true) {
         data = JSON.parse(this.responseText);
@@ -68,6 +69,8 @@
 
     console.log(obstacle);
     console.log(robot);
+    var potential_field;
+    var bitmatrix = [];
 
     //=================================set svg init=============================
     var height = 400,

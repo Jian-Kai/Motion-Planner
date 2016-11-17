@@ -1,5 +1,6 @@
 function open_bitmap() {
 
+    potential_field = [];
     d3.selectAll("rect").remove();
     var n = 128,
         white = 254,
@@ -8,7 +9,8 @@ function open_bitmap() {
     //====================================set bitmatrix================================
     var robotgoal = [],
         robotcontrolpoint = [],
-        robotinit = [];
+        robotinit = [],
+        robotpolygon = [];
     //=======================set inti for bit map===============================
     for (var i = 0; i < robot.length; i++) {
         //console.log([parseFloat(robot[i].goal[0]), parseFloat(robot[i].goal[1])]);
@@ -20,12 +22,10 @@ function open_bitmap() {
         }
         robotcontrolpoint.push(temp);
     }
-    console.log(robot);
+    //console.log(robot);
     console.log("robotgoal:" + robotgoal);
     console.log("robotinit:" + robotinit);
     console.log( robotcontrolpoint);
-
-    var bitmatrix = [];
 
     for (var i = 0; i < n; i++) {
         bitmatrix[i] = [];
@@ -113,25 +113,16 @@ function open_bitmap() {
             }
         }
     }
-    var potential_field = [];
+    var potential = [];
     //=============================NF1 Algorithm===================================
     console.log(robotcontrolpoint[0].length);
     for(var i = 0; i < robotcontrolpoint[0].length; i++){
       var matrix = NF1(bitmatrix, robotcontrolpoint[0][i], robotgoal[0]);
       draw_bitmap(matrix, i);
-      potential_field.push(matrix);
+      potential.push(matrix);
     }
 
-    /*for(var i = 0; i < potential_field.length; i++){
-      draw_bitmap(potential_field[i], i);
-    }*/
-
-    //draw_bitmap(bitmatrix, 1);
-    //bitmatrix = BFS(robotinit[0], bitmatrix, robotgoal[0]);
-
-    //=====================================draw bitmap==================================
-
-
+    potential_field = potential;
 
     function scanline(x0, y0, x1, y1) {
         var d, dx, dy;
@@ -140,7 +131,7 @@ function open_bitmap() {
         dx = (x1 - x0) / d;
 
         for (var i = 0; i <= d; i++) {
-            y_list.push([Math.floor(x0 + i * dx), Math.floor(y0 + i * dy)]);
+            y_list.push([Math.round(x0 + i * dx), Math.round(y0 + i * dy)]);
             //bitmatrix[Math.round(x0+i*dx)][Math.round(y0+i*dy)] = black;
         }
     }
@@ -312,114 +303,4 @@ function obstacle2bitmap(obstacle) {
         obstacle_points.push(point);
     }
     return obstacle_points;
-}
-
-function BFS(init, bitmatrix, goal) {
-    console.log(init);
-    console.log(goal);
-    //init = [10, 1];
-    var markmap = [];
-    for (var i = 0; i < 128; i++) {
-        markmap[i] = [];
-        for (var j = 0; j < 128; j++) {
-            markmap[i][j] = false;
-        }
-    }
-
-    var open = [],
-        success = false;
-    open[0] = [
-        [Math.round(init[0]), Math.round(init[1])]
-    ], opencount = -1;
-
-    console.log(open[0]);
-    while (!success) {
-        opencount++;
-        var x = first();
-        //console.log(x);
-        //open[opencount+1] ;
-        //console.log(opencount);
-
-        for (var t = -1; t <= 1; t += 2) {
-            var posX = x[0] + t,
-                posY = x[1] + t;
-            if (posX > -1 && posY > -1 && posX < 128 && posY < 128) {
-
-                if (bitmatrix[x[0]][posY] < 255 && !markmap[x[0]][posY]) {
-                    var xp = [x[0], posY, opencount];
-                    open[opencount + 1].push(xp);
-                    markmap[x[0]][posY] = true;
-                    if (x[0] == goal[0] && posY == goal[1]) {
-                        success = true;
-                    }
-                }
-
-                if (bitmatrix[posX][x[1]] < 255 && !markmap[posX][x[1]]) {
-                    var xp = [posX, x[1], opencount];
-                    open[opencount + 1].push(xp);
-                    markmap[posX][x[1]] = true;
-                    if (posX == goal[0] && x[1] == goal[1]) {
-                        success = true;
-                    }
-                }
-            }
-        }
-        //console.log(open[opencount+1]);
-    }
-    if (success) {
-        console.log(open);
-        console.log(opencount);
-        var path = [];
-        for (var i = 0; i < open[open.length - 1].length; i++) {
-            if (open[open.length - 1][i][0] == goal[0] && open[open.length - 1][i][1] == goal[1]) {
-                path.push(open[open.length - 1][i]);
-            }
-        }
-        var count = 0;
-        while (path[count].length == 3) {
-            path.push(open[path[count][2]][0]);
-            count++;
-        }
-        console.log(path);
-        for (var i = 0; i < path.length; i++) {
-            //console.log(path[i]);
-            bitmatrix[path[i][0]][path[i][1]] = 256;
-        }
-
-        return bitmatrix;
-    }
-
-    function first() {
-        //console.log(open[opencount]);
-        var field = bitmatrix[Math.round(open[opencount][0][0])][Math.round(open[opencount][0][1])];
-        var index = 0,
-            pos = [Math.round(open[opencount][0][0]), Math.round(open[opencount][0][1])];
-        //console.log(open[opencount].length);
-        for (var i = 0; i < open[opencount].length; i++) {
-            if (bitmatrix[Math.round(open[opencount][i][0])][Math.round(open[opencount][i][1])] < field) {
-                field = bitmatrix[Math.round(open[opencount][i][0])][Math.round(open[opencount][i][1])];
-                pos = [Math.round(open[opencount][i][0]), Math.round(open[opencount][i][1])];
-                index = i;
-            }
-        }
-
-        var temp = [];
-        for (var i = 1; i < open[opencount].length; i++) {
-            if (i != index) {
-                temp.push(open[opencount][i]);
-            }
-        }
-        open[opencount] = [open[opencount][index]];
-
-        open[opencount + 1] = temp;
-        //console.log(open[opencount +1]);
-
-        return pos;
-    }
-
-    function random(number) {
-
-        return number;
-    }
-
 }
