@@ -66,7 +66,7 @@ function BFS() {
                 if (cor1[0] > -1 && cor1[1] > -1 && cor1[0] < 128 && cor1[1] < 128 && cor3[0] > -1 && cor3[1] > -1 && cor3[0] < 128 && cor3[1] < 128) {
                   if(!collision(polygon, [posX, x.pos[1], x.pos[2]], obstacle_bitlist)){
                     if (fullbit[x.pos[2]][posX][x.pos[1]] != 256) {
-                        var Ux = potential_field[0][ob2wor([posX, x.pos[1], x.pos[2]], controlpoint[0])[0]][ob2wor([posX, x.pos[1], x.pos[2]], controlpoint[0])[1]] + potential_field[1][ob2wor([posX, x.pos[1], x.pos[2]], controlpoint[1])[0]][ob2wor([posX, x.pos[1], x.pos[2]], controlpoint[1])[1]];
+                        var Ux = potential_field[0][cor1[0]][cor1[1]] + potential_field[1][cor3[0]][cor3[1]];
                         if (Ux < 508) {
                             //console.log("!!");
                             Tree.push({
@@ -86,7 +86,7 @@ function BFS() {
                 if (cor2[0] > -1 && cor2[1] > -1 && cor2[0] < 128 && cor2[1] < 128 && cor4[0] > -1 && cor4[1] > -1 && cor4[0] < 128 && cor4[1] < 128) {
                   if(!collision(polygon, [x.pos[0], posY, x.pos[2]], obstacle_bitlist)){
                     if (fullbit[x.pos[2]][x.pos[0]][posY] != 256) {
-                        var Ux = potential_field[0][ob2wor([x.pos[0], posY, x.pos[2]], controlpoint[0])[0]][ob2wor([x.pos[0], posY, x.pos[2]], controlpoint[0])[1]] + potential_field[1][ob2wor([x.pos[0], posY, x.pos[2]], controlpoint[1])[0]][ob2wor([x.pos[0], posY, x.pos[2]], controlpoint[1])[1]];
+                        var Ux = potential_field[0][cor2[0]][cor2[1]] + potential_field[1][cor4[0]][cor4[1]];
                         if (Ux < 508) {
                             //console.log("!!");
                             Tree.push({
@@ -169,7 +169,7 @@ function BFS() {
 
 
 function ob2wor(init, control) {
-    var theta = init[2] * (Math.PI / 180)
+    var theta = init[2] * (Math.PI / 180);
     var x = control[0] * Math.cos(theta) - control[1] * Math.sin(theta) + init[0];
     var y = control[0] * Math.sin(theta) + control[1] * Math.cos(theta) + init[1];
     //console.log([Math.round(x), Math.round(y)]);
@@ -200,5 +200,57 @@ function empty(open) {
 }
 
 function collision(robot, ori, obstacles){
+      //bitmatrix
+      var collision = false;
+      var wor_robot = [];
+      console.log("collision");
+      for(var i = 0; i < robot.length; i++){
+        wor_robot[i] = [];
+        for(var j = 0; j < robot[i].length; j++){
+          var x = ob2wor(ori, robot[i][j]);
+          wor_robot[i][j] = x;
+        }
+      }
+      console.log(obstacles);
 
+      var robot_vecter = [];
+      var obstacle_vecter = [];
+
+      for(var i = 0; i < wor_robot.length; i++){
+          for(var j = 0; j < wor_robot[i].length; j++){
+            if(j != wor_robot[i].length - 1){
+              robot_vecter.push([wor_robot[i][j+1][0]-wor_robot[i][j][0], wor_robot[i][j+1][1]-wor_robot[i][j][1], wor_robot[i][j], wor_robot[i][j+1]]);
+            }
+            else{
+              robot_vecter.push([wor_robot[i][0][0]-wor_robot[i][j][0], wor_robot[i][0][1]-wor_robot[i][j][1], wor_robot[i][j], wor_robot[i][j+1]]);
+            }
+          }
+      }
+      console.log(robot_vecter);
+
+      for(var i = 0; i < obstacles.length; i++){
+        for(var j = 0; j < obstacles[i].length; j++){
+          for(var k = 0; k < obstacles[i][j].length; k++){
+            if(k != obstacles[i][j].length - 1){
+              obstacle_vecter.push([obstacles[i][j][k+1].x-obstacles[i][j][k].x, obstacles[i][j][k+1].y-obstacles[i][j][k].y, obstacles[i][j][k], obstacles[i][j][k+1]]);
+            }
+            else{
+              obstacle_vecter.push([obstacles[i][j][0].x-obstacles[i][j][k].x, obstacles[i][j][0].y-obstacles[i][j][k].y, obstacles[i][j][k], obstacles[i][j][0]]);
+            }
+
+          }
+        }
+      }
+      console.log(obstacle_vecter);
+
+      for(var i = 0; i < robot_vecter.length; i++){
+        var p1 = robot_vecter[i][2], p2 = robot_vecter[i][3];
+        var v12 = [robot_vecter[i][0], robot_vecter[i][1]];
+        for(var j = 0; j < obstacle_vecter.length; j++){
+          var p3 = obstacle_vecter[j][2], p4 = obstacle_vecter[j][3];
+          var v13 = [p3[0] - p1[0], p3[1] - p1[1]], v14 = [p4[0] - p1[0], p4[1] - p1[1]];
+
+
+        }
+      }
 }
