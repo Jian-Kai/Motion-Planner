@@ -208,36 +208,79 @@
         })
         .attr("class", "robot")
         .on("mousedown", function() {
+          if(window.event.button == 2){
+            console.log("right");
+            cheak = true;
+          }
+          else{
+            console.log("left");
+            cheak = false;
+          }
           start = d3.mouse(svg.node());
-          console.log(this.id);
+          //console.log(this.id);
           that = robot[this.id[this.id.length - 1]];
-          console.log(that);
+          //console.log(that);
           var together = document.getElementsByTagName("polyline"); //select tag is polyline
           for (var i = 0; i < together.length; i++) {
             if (together[i].id == this.id) {
               select.push(together[i]);
             }
           }
-          console.log(select);
+          //console.log(select);
         })
         .on("mousemove", function() {
-          var m = d3.mouse(svg.node());
-          if (!select || !start) return;
-          for (var i = 0; i < select.length; i++) {
-            for (var j = 0; j < select[i].points.length; j++) {
-              select[i].points[j].x += m[0] - start[0];
-              select[i].points[j].y += m[1] - start[1];
+          if(!cheak){
+            //console.log("left");
+            var m = d3.mouse(svg.node());
+            if (!select || !start) return;
+            for (var i = 0; i < select.length; i++) {
+              for (var j = 0; j < select[i].points.length; j++) {
+                select[i].points[j].x += m[0] - start[0];
+                select[i].points[j].y += m[1] - start[1];
+              }
             }
-          }
-          that.initaial[0] = parseFloat(that.initaial[0]) + (scale.invert(m[0] - start[0]));
-          that.initaial[1] = parseFloat(that.initaial[1]) + (scale.invert(m[1] - start[1]));
+            that.initaial[0] = parseFloat(that.initaial[0]) + (scale.invert(m[0] - start[0]));
+            that.initaial[1] = parseFloat(that.initaial[1]) + (scale.invert(m[1] - start[1]));
 
-          console.log(that);
-          start = m;
+            //console.log(that);
+            start = m;
+          }
+          else{
+            //console.log("right");
+            var m = d3.mouse(svg.node());
+            if (!select || !start) return;
+            //var dx = m[0] - start[0], dy = m[1] - start[1];
+            var pre = [start[0]-scale(that.initaial[0]), start[1]-scale(that.initaial[1])];
+            var cur = [m[0]-scale(that.initaial[0]), m[1]-scale(that.initaial[1])];
+            var rotation = Math.atan2(cur[1], cur[0]) - Math.atan2(pre[1], pre[0]);
+            var Wrotation = rotation / (Math.PI / 180);
+            for (var i = 0; i < select.length; i++) {
+              for (var j = 0; j < select[i].points.length; j++) {
+                var x = (select[i].points[j].x - scale(that.initaial[0])) * Math.cos(rotation) - (select[i].points[j].y - scale(that.initaial[1])) * Math.sin(rotation) ;
+                var y = (select[i].points[j].x - scale(that.initaial[0])) * Math.sin(rotation) + (select[i].points[j].y - scale(that.initaial[1])) * Math.cos(rotation) ;
+
+                select[i].points[j].x = x + scale(that.initaial[0]);
+                select[i].points[j].y = y + scale(that.initaial[1]);
+              }
+            }
+            //console.log(Wrotation);
+            that.initaial[2] = parseFloat(that.initaial[2]) + Wrotation;
+
+            if(that.initaial[2] > 360){
+              that.initaial[2] -= 360;
+            }
+            if(that.initaial[2] < 0){
+              that.initaial[2] += 360;
+            }
+            console.log(that.initaial[2]);
+            start = m;
+          }
+
         })
         .on("mouseup", function() {
           select = [];
           that = [];
+          cheak = null;
           start = null;
         });
     }
@@ -347,6 +390,12 @@
             console.log(Wrotation);
             that.initaial[2] = parseFloat(that.initaial[2]) + Wrotation;
             //console.log(that);
+            if(that.initaial[2] > 360){
+              that.initaial[2] -= 360;
+            }
+            if(that.initaial[2] < 0){
+              that.initaial[2] += 360;
+            }
             start = m;
           }
 
@@ -429,6 +478,81 @@
           return "goalrobot" + d.order;
         })
         .attr("class", "goalrobot")
+        .on("mousedown", function() {
+          if(window.event.button == 2){
+            console.log("right");
+            cheak = true;
+          }
+          else{
+            console.log("left");
+            cheak = false;
+          }
+          start = d3.mouse(svg.node());
+          //console.log(this.id);
+          that = robot[this.id[this.id.length - 1]];
+          //console.log(that);
+          var together = document.getElementsByTagName("polyline"); //select tag is polyline
+          for (var i = 0; i < together.length; i++) {
+            if (together[i].id == this.id) {
+              select.push(together[i]);
+            }
+          }
+          //console.log(select);
+        })
+        .on("mousemove", function() {
+          if(!cheak){
+            //console.log("left");
+            var m = d3.mouse(svg.node());
+            if (!select || !start) return;
+            for (var i = 0; i < select.length; i++) {
+              for (var j = 0; j < select[i].points.length; j++) {
+                select[i].points[j].x += m[0] - start[0];
+                select[i].points[j].y += m[1] - start[1];
+              }
+            }
+            that.goal[0] = parseFloat(that.goal[0]) + (scale.invert(m[0] - start[0]));
+            that.goal[1] = parseFloat(that.goal[1]) + (scale.invert(m[1] - start[1]));
+
+            //console.log(that);
+            start = m;
+          }
+          else{
+            //console.log("right");
+            var m = d3.mouse(svg.node());
+            if (!select || !start) return;
+            //var dx = m[0] - start[0], dy = m[1] - start[1];
+            var pre = [start[0]-scale(that.goal[0]), start[1]-scale(that.goal[1])];
+            var cur = [m[0]-scale(that.goal[0]), m[1]-scale(that.goal[1])];
+            var rotation = Math.atan2(cur[1], cur[0]) - Math.atan2(pre[1], pre[0]);
+            var Wrotation = rotation / (Math.PI / 180);
+            for (var i = 0; i < select.length; i++) {
+              for (var j = 0; j < select[i].points.length; j++) {
+                var x = (select[i].points[j].x - scale(that.goal[0])) * Math.cos(rotation) - (select[i].points[j].y - scale(that.goal[1])) * Math.sin(rotation) ;
+                var y = (select[i].points[j].x - scale(that.goal[0])) * Math.sin(rotation) + (select[i].points[j].y - scale(that.goal[1])) * Math.cos(rotation) ;
+
+                select[i].points[j].x = x + scale(that.goal[0]);
+                select[i].points[j].y = y + scale(that.goal[1]);
+              }
+            }
+            console.log(Wrotation);
+            that.goal[2] = parseFloat(that.goal[2]) + Wrotation;
+            if(that.initaial[2] > 360){
+              that.initaial[2] -= 360;
+            }
+            if(that.initaial[2] < 0){
+              that.initaial[2] += 360;
+            }
+            //console.log(that);
+            start = m;
+          }
+
+        })
+        .on("mouseup", function() {
+          select = [];
+          that = [];
+          cheak = null;
+          start = null;
+        });
     }
   </script>
 </body>

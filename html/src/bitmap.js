@@ -161,8 +161,8 @@ function NF1(bitM, robotcontrolpoint, robotgoal) {
       }
     }
     var theta = robotgoal[2] * (Math.PI / 180)
-    var x = robotcontrolpoint[0] * Math.cos(theta) - robotcontrolpoint[1] * Math.sin(theta) + robotgoal[0];
-    var y = robotcontrolpoint[0] * Math.sin(theta) + robotcontrolpoint[1] * Math.cos(theta) + robotgoal[1];
+    var x = Math.round(parseFloat(robotcontrolpoint[0] * Math.cos(theta) - robotcontrolpoint[1] * Math.sin(theta) + robotgoal[0]));
+    var y = Math.round(parseFloat(robotcontrolpoint[0] * Math.sin(theta) + robotcontrolpoint[1] * Math.cos(theta) + robotgoal[1]));
     var L = [],
         count = 0;
     console.log([x,y]);
