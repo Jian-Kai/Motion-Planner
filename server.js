@@ -4,6 +4,7 @@ var express                         = require('express'),				// npm install expr
 
 
 app.get('/index', readHamdler.callback);
+app.get('/index2', readHamdler.callback);
 
 
 var port = process.env.PORT || 3000;

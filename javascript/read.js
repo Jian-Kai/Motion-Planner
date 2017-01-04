@@ -8,13 +8,13 @@ var callback = function callback(req, res) {
     res.set("Access-Control-Allow-Headers", "X-Requested-With");
 
     var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-
+    var token = req.query.token;
     var robotlist, obstaclelist;
     fs.readdir('./object', function(err, item) {
         var robot, obstacle;
-        //console.log(item);
-        robot = item[1];
-        obstacle = item[0];
+        console.log(item);
+        robot = item[2];
+        obstacle = item[token];
         robotlist = readrobot(robot);
         //console.log(robotlist);
         obstaclelist = readobstacle(obstacle);

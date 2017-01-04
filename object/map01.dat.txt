@@ -1,0 +1,834 @@
+# number of obstacles
+64
+# obstacle #0
+# number of polygons
+1
+# polygon #0
+# number of vertices
+4
+# vertices
+-1.499999 5.0
+-1.499999 -5.0
+1.5 -5.0
+1.5 5.0
+# initial configuration
+15.204273 86.877785 0
+# obstacle #1
+# number of polygons
+1
+# polygon #0
+# number of vertices
+4
+# vertices
+-4.999487 -1.501709
+5.000513 -1.498291
+4.999489 1.501709
+-5.000511 1.498291
+# initial configuration
+22.982052 90.28222 0
+# obstacle #2
+# number of polygons
+1
+# polygon #0
+# number of vertices
+4
+# vertices
+-4.999486 -1.501709
+5.000513 -1.498291
+4.999489 1.501709
+-5.0005116 1.498291
+# initial configuration
+11.727007 94.66941 0
+# obstacle #3
+# number of polygons
+1
+# polygon #0
+# number of vertices
+4
+# vertices
+-1.5 5.0
+-1.5 -5.0
+1.5 -5.0
+1.5 5.0
+# initial configuration
+19.568718 98.140015 0
+# obstacle #4
+# number of polygons
+1
+# polygon #0
+# number of vertices
+4
+# vertices
+-1.5 5.0
+-1.5 -5.0
+1.5 -5.0
+1.5 5.0
+# initial configuration
+56.34103 108.59794 0
+# obstacle #5
+# number of polygons
+1
+# polygon #0
+# number of vertices
+4
+# vertices
+-4.999485 -1.501709
+5.000519 -1.498291
+4.999489 1.501709
+-5.000511 1.498291
+# initial configuration
+64.118805 112.00237 0
+# obstacle #6
+# number of polygons
+1
+# polygon #0
+# number of vertices
+4
+# vertices
+-4.999485 -1.501709
+5.000515 -1.498291
+4.999489 1.501709
+-5.000511 1.498291
+# initial configuration
+52.86376 116.389565 0
+# obstacle #7
+# number of polygons
+1
+# polygon #0
+# number of vertices
+4
+# vertices
+-1.5 5.0
+-1.5 -5.0
+1.5 -5.0
+1.5 5.0
+# initial configuration
+60.705475 119.86017 0
+# obstacle #8
+# number of polygons
+1
+# polygon #0
+# number of vertices
+4
+# vertices
+-1.5 5.0
+-1.5 -5.0
+1.5 -5.0
+1.5 5.0
+# initial configuration
+60.191963 91.224945 0
+# obstacle #9
+# number of polygons
+1
+# polygon #0
+# number of vertices
+4
+# vertices
+-4.999489 -1.501709
+5.000511 -1.498291
+4.999489 1.501709
+-5.000515 1.498291
+# initial configuration
+67.96974 94.62938 0
+# obstacle #10
+# number of polygons
+1
+# polygon #0
+# number of vertices
+4
+# vertices
+-4.999489 -1.501709
+5.000511 -1.498291
+4.999485 1.501709
+-5.000515 1.498291
+# initial configuration
+56.7147 99.01657 0
+# obstacle #11
+# number of polygons
+1
+# polygon #0
+# number of vertices
+4
+# vertices
+-1.5 5.0
+-1.5 -5.0
+1.5 -5.0
+1.5 5.0
+# initial configuration
+64.556404 102.487175 0
+# obstacle #12
+# number of polygons
+1
+# polygon #0
+# number of vertices
+4
+# vertices
+-1.4999962 5.0
+-1.4999962 -5.0
+1.5 -5.0
+1.5 5.0
+# initial configuration
+64.15231 73.12991 0
+# obstacle #13
+# number of polygons
+1
+# polygon #0
+# number of vertices
+4
+# vertices
+-4.999489 -1.501709
+5.000511 -1.498291
+4.999481 1.501709
+-5.000519 1.498291
+# initial configuration
+71.9301 76.53435 0
+# obstacle #14
+# number of polygons
+1
+# polygon #0
+# number of vertices
+4
+# vertices
+-4.999485 -1.501709
+5.000511 -1.498291
+4.999489 1.501709
+-5.000511 1.498291
+# initial configuration
+60.67505 80.92154 0
+# obstacle #15
+# number of polygons
+1
+# polygon #0
+# number of vertices
+4
+# vertices
+-1.5 5.0
+-1.5 -5.0
+1.5 -5.0
+1.5 5.0
+# initial configuration
+68.51676 84.39214 0
+# obstacle #16
+# number of polygons
+1
+# polygon #0
+# number of vertices
+4
+# vertices
+-1.5 5.0
+-1.5 -5.0
+1.5 -5.0
+1.5 5.0
+# initial configuration
+68.834694 53.503242 0
+# obstacle #17
+# number of polygons
+1
+# polygon #0
+# number of vertices
+4
+# vertices
+-4.999481 -1.501709
+5.000519 -1.498291
+4.999489 1.501709
+-5.000511 1.498291
+# initial configuration
+76.61247 56.907677 0
+# obstacle #18
+# number of polygons
+1
+# polygon #0
+# number of vertices
+4
+# vertices
+-4.999485 -1.501709
+5.000511 -1.498291
+4.999489 1.501709
+-5.000511 1.498291
+# initial configuration
+65.35743 61.29487 0
+# obstacle #19
+# number of polygons
+1
+# polygon #0
+# number of vertices
+4
+# vertices
+-1.5 5.0
+-1.5 -5.0
+1.5 -5.0
+1.5 5.0
+# initial configuration
+73.19914 64.76547 0
+# obstacle #20
+# number of polygons
+1
+# polygon #0
+# number of vertices
+4
+# vertices
+-1.5 5.0
+-1.5 -5.0
+1.5 -5.0
+1.5 5.0
+# initial configuration
+19.877438 64.158966 0
+# obstacle #21
+# number of polygons
+1
+# polygon #0
+# number of vertices
+4
+# vertices
+-4.999489 -1.501709
+5.000511 -1.498291
+4.999485 1.501709
+-5.000513 1.498291
+# initial configuration
+27.655216 67.5634 0
+# obstacle #22
+# number of polygons
+1
+# polygon #0
+# number of vertices
+4
+# vertices
+-4.999486 -1.501709
+5.000513 -1.498291
+4.999489 1.501709
+-5.000511 1.498291
+# initial configuration
+16.40017 71.95059 0
+# obstacle #23
+# number of polygons
+1
+# polygon #0
+# number of vertices
+4
+# vertices
+-1.5 5.0
+-1.5 -5.0
+1.5 -5.0
+1.5 5.0
+# initial configuration
+24.24188 75.421196 0
+# obstacle #24
+# number of polygons
+1
+# polygon #0
+# number of vertices
+4
+# vertices
+-1.5 5.0
+-1.5 -5.0
+1.5 -5.0
+1.5 5.0
+# initial configuration
+25.292816 42.51931 0
+# obstacle #25
+# number of polygons
+1
+# polygon #0
+# number of vertices
+4
+# vertices
+-4.999487 -1.501709
+5.000515 -1.498291
+4.999489 1.501709
+-5.000511 1.498291
+# initial configuration
+33.070595 45.923744 0
+# obstacle #26
+# number of polygons
+1
+# polygon #0
+# number of vertices
+4
+# vertices
+-4.999489 -1.501709
+5.000511 -1.498291
+4.999487 1.501709
+-5.000513 1.498291
+# initial configuration
+21.815552 50.310936 0
+# obstacle #27
+# number of polygons
+1
+# polygon #0
+# number of vertices
+4
+# vertices
+-1.5 5.0
+-1.5 -5.0
+1.5 -5.0
+1.5 5.0
+# initial configuration
+29.65726 53.78154 0
+# obstacle #28
+# number of polygons
+1
+# polygon #0
+# number of vertices
+4
+# vertices
+-1.5 5.0
+-1.5 -5.0
+1.5 -5.0
+1.5 5.0
+# initial configuration
+31.452137 21.109394 0
+# obstacle #29
+# number of polygons
+1
+# polygon #0
+# number of vertices
+4
+# vertices
+-4.999485 -1.501709
+5.000515 -1.498291
+4.999489 1.501709
+-5.000511 1.498291
+# initial configuration
+39.22991 24.513828 0
+# obstacle #30
+# number of polygons
+1
+# polygon #0
+# number of vertices
+4
+# vertices
+-4.999489 -1.501709
+5.000513 -1.498291
+4.999487 1.501709
+-5.000513 1.498291
+# initial configuration
+27.97487 28.90102 0
+# obstacle #31
+# number of polygons
+1
+# polygon #0
+# number of vertices
+4
+# vertices
+-1.5 5.0
+-1.5 -5.0
+1.5 -5.0
+1.5 5.0
+# initial configuration
+35.81658 32.371624 0
+# obstacle #32
+# number of polygons
+1
+# polygon #0
+# number of vertices
+4
+# vertices
+-1.5 5.0
+-1.5 -5.0
+1.5 -5.0
+1.5 5.0
+# initial configuration
+50.30205 8.856401 0
+# obstacle #33
+# number of polygons
+1
+# polygon #0
+# number of vertices
+4
+# vertices
+-4.999485 -1.501709
+5.000515 -1.498291
+4.999489 1.501709
+-5.000511 1.498291
+# initial configuration
+58.079826 12.260836 0
+# obstacle #34
+# number of polygons
+1
+# polygon #0
+# number of vertices
+4
+# vertices
+-4.999485 -1.501709
+5.000515 -1.498291
+4.999489 1.501709
+-5.000511 1.498291
+# initial configuration
+46.824783 16.648027 0
+# obstacle #35
+# number of polygons
+1
+# polygon #0
+# number of vertices
+4
+# vertices
+-1.5 5.0
+-1.5 -5.0
+1.5 -5.0
+1.5 5.0
+# initial configuration
+54.666496 20.118631 0
+# obstacle #36
+# number of polygons
+1
+# polygon #0
+# number of vertices
+4
+# vertices
+-1.5 5.0
+-1.5 -5.0
+1.5 -5.0
+1.5 5.0
+# initial configuration
+72.784096 10.092642 0
+# obstacle #37
+# number of polygons
+1
+# polygon #0
+# number of vertices
+4
+# vertices
+-4.999481 -1.501709
+5.000519 -1.498291
+4.999489 1.501709
+-5.000511 1.498291
+# initial configuration
+80.561874 13.497076 0
+# obstacle #38
+# number of polygons
+1
+# polygon #0
+# number of vertices
+4
+# vertices
+-4.999489 -1.501709
+5.000511 -1.498291
+4.999489 1.501709
+-5.000511 1.498291
+# initial configuration
+69.30683 17.884268 0
+# obstacle #39
+# number of polygons
+1
+# polygon #0
+# number of vertices
+4
+# vertices
+-1.5 5.0
+-1.5 -5.0
+1.5 -5.0
+1.5 5.0
+# initial configuration
+77.148544 21.354872 0
+# obstacle #40
+# number of polygons
+1
+# polygon #0
+# number of vertices
+4
+# vertices
+-1.5 5.0
+-1.5 -5.0
+1.5 -5.0
+1.5 5.0
+# initial configuration
+93.71265 12.258797 0
+# obstacle #41
+# number of polygons
+1
+# polygon #0
+# number of vertices
+4
+# vertices
+-4.999489 -1.501709
+5.000511 -1.498291
+4.999481 1.501709
+-5.000519 1.498291
+# initial configuration
+101.49043 15.663231 0
+# obstacle #42
+# number of polygons
+1
+# polygon #0
+# number of vertices
+4
+# vertices
+-4.999489 -1.501709
+5.000511 -1.498291
+4.999489 1.501709
+-5.000511 1.498291
+# initial configuration
+90.23538 20.050423 0
+# obstacle #43
+# number of polygons
+1
+# polygon #0
+# number of vertices
+4
+# vertices
+-1.5 5.0
+-1.5 -5.0
+1.5 -5.0
+1.5 5.0
+# initial configuration
+98.077095 23.521027 0
+# obstacle #44
+# number of polygons
+1
+# polygon #0
+# number of vertices
+4
+# vertices
+-1.5 5.0
+-1.5 -5.0
+1.5 -5.0
+1.5 5.0
+# initial configuration
+110.88872 23.85538 0
+# obstacle #45
+# number of polygons
+1
+# polygon #0
+# number of vertices
+4
+# vertices
+-4.999489 -1.501709
+5.000511 -1.498291
+4.999481 1.501709
+-5.000519 1.498291
+# initial configuration
+118.666504 27.259813 0
+# obstacle #46
+# number of polygons
+1
+# polygon #0
+# number of vertices
+4
+# vertices
+-4.999489 -1.5017071
+5.000511 -1.4982891
+4.999489 1.501709
+-5.000511 1.498291
+# initial configuration
+107.41145 31.647003 0
+# obstacle #47
+# number of polygons
+1
+# polygon #0
+# number of vertices
+4
+# vertices
+-1.5 5.0
+-1.5 -4.999998
+1.5 -4.999998
+1.5 5.0
+# initial configuration
+115.25317 35.117607 0
+# obstacle #48
+# number of polygons
+1
+# polygon #0
+# number of vertices
+4
+# vertices
+-1.5 5.0
+-1.5 -5.0
+1.5 -5.0
+1.5 5.0
+# initial configuration
+109.63061 41.884773 0
+# obstacle #49
+# number of polygons
+1
+# polygon #0
+# number of vertices
+4
+# vertices
+-4.999481 -1.501709
+5.000519 -1.498291
+4.999489 1.501709
+-5.000511 1.498291
+# initial configuration
+117.40839 45.289207 0
+# obstacle #50
+# number of polygons
+1
+# polygon #0
+# number of vertices
+4
+# vertices
+-4.999489 -1.501709
+5.000511 -1.498291
+4.999489 1.501709
+-5.000511 1.498291
+# initial configuration
+106.15334 49.6764 0
+# obstacle #51
+# number of polygons
+1
+# polygon #0
+# number of vertices
+4
+# vertices
+-1.5 5.0
+-1.5 -5.0
+1.5 -5.0
+1.5 5.0
+# initial configuration
+113.995056 53.147003 0
+# obstacle #52
+# number of polygons
+1
+# polygon #0
+# number of vertices
+4
+# vertices
+-1.5 5.0
+-1.5 -5.0
+1.5 -5.0
+1.5 5.0
+# initial configuration
+108.94136 61.653664 0
+# obstacle #53
+# number of polygons
+1
+# polygon #0
+# number of vertices
+4
+# vertices
+-4.999489 -1.501709
+5.000511 -1.498291
+4.999481 1.501709
+-5.000519 1.498291
+# initial configuration
+116.71915 65.0581 0
+# obstacle #54
+# number of polygons
+1
+# polygon #0
+# number of vertices
+4
+# vertices
+-4.999489 -1.501709
+5.000511 -1.498291
+4.999489 1.501709
+-5.000511 1.498291
+# initial configuration
+105.464096 69.44529 0
+# obstacle #55
+# number of polygons
+1
+# polygon #0
+# number of vertices
+4
+# vertices
+-1.5 5.0
+-1.5 -5.0
+1.5 -5.0
+1.5 5.0
+# initial configuration
+113.30581 72.91589 0
+# obstacle #56
+# number of polygons
+1
+# polygon #0
+# number of vertices
+4
+# vertices
+-1.5 5.0
+-1.5 -5.0
+1.5 -5.0
+1.5 5.0
+# initial configuration
+107.82547 82.275894 0
+# obstacle #57
+# number of polygons
+1
+# polygon #0
+# number of vertices
+4
+# vertices
+-4.999489 -1.501709
+5.000511 -1.498291
+4.999481 1.5017014
+-5.000519 1.4982834
+# initial configuration
+115.60326 85.68033 0
+# obstacle #58
+# number of polygons
+1
+# polygon #0
+# number of vertices
+4
+# vertices
+-4.999489 -1.501709
+5.000511 -1.498291
+4.999489 1.5017014
+-5.000511 1.4982834
+# initial configuration
+104.348206 90.06752 0
+# obstacle #59
+# number of polygons
+1
+# polygon #0
+# number of vertices
+4
+# vertices
+-1.5 5.0
+-1.5 -5.0
+1.5 -5.0
+1.5 5.0
+# initial configuration
+112.18992 93.53812 0
+# obstacle #60
+# number of polygons
+1
+# polygon #0
+# number of vertices
+4
+# vertices
+-1.5 5.0
+-1.5 -5.0
+1.5 -5.0
+1.5 5.0
+# initial configuration
+104.32461 101.50871 0
+# obstacle #61
+# number of polygons
+1
+# polygon #0
+# number of vertices
+4
+# vertices
+-4.999481 -1.501709
+5.000519 -1.498291
+4.999489 1.501709
+-5.000511 1.498291
+# initial configuration
+112.10239 104.91315 0
+# obstacle #62
+# number of polygons
+1
+# polygon #0
+# number of vertices
+4
+# vertices
+-4.999489 -1.501709
+5.000511 -1.498291
+4.999489 1.501709
+-5.000511 1.498291
+# initial configuration
+100.84734 109.30034 0
+# obstacle #63
+# number of polygons
+1
+# polygon #0
+# number of vertices
+4
+# vertices
+-1.5 5.0
+-1.5 -5.0
+1.5 -5.0
+1.5 5.0
+# initial configuration
+108.68906 112.77094 0

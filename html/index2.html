@@ -49,7 +49,7 @@
     var data;
     var oReq = new XMLHttpRequest();
     oReq.onload = reqListener;
-    var qurl = "index?token=0";
+    var qurl = "index?token=1";
     console.log(qurl);
     oReq.open("get", qurl, false);
     oReq.send();
@@ -342,22 +342,16 @@
             cheak = false;
           }
           start = d3.mouse(svg.node());
-          console.log(this.id);
-          if(this.id.length > 9){
-            var x = this.id[this.id.length - 2] + this.id[this.id.length - 1];
-            that = obstacle[x];
-          }
-          else{
-            that = obstacle[this.id[this.id.length - 1]];
-          }
           //console.log(this.id);
+          that = obstacle[this.id[this.id.length - 1]];
+          //console.log(that);
           var together = document.getElementsByTagName("polyline"); //select tag is polyline
           for (var i = 0; i < together.length; i++) {
             if (together[i].id == this.id) {
               select.push(together[i]);
             }
           }
-          console.log(select);
+          //console.log(select);
         })
         .on("mousemove", function() {
           if(!cheak){
