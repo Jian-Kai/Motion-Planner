@@ -17,6 +17,15 @@ function BFS() {
             }
         }
     }
+    var pathmatrix = [];
+
+    for (var j = 0; j < 128; j++) {
+        pathmatrix[j] = [];
+        for (var k = 0; k < 128; k++) {
+            pathmatrix[j][k] = bitmatrix[j][k];
+        }
+    }
+
     //console.log(fullbit[94]);
     console.log(open.length);
     //====================================set bitmatrix================================
@@ -111,7 +120,8 @@ function BFS() {
             cor4 = ob2wor([x.pos[0], x.pos[1], x.pos[2] - degree], controlpoint[1]);
 
         var degree = 2;
-        if (x.pos[2] + degree <= 360) {
+        if (x.pos[2] + degree < 360) {
+          if(!collision(polygon, [x.pos[0], x.pos[1], x.pos[2] + degree], obstacle_bitlist)){
             if (fullbit[x.pos[2] + degree][x.pos[0]][x.pos[1]] != 256) {
                 if (cor1[0] > -1 && cor1[1] > -1 && cor1[0] < 128 && cor1[1] < 128 && cor3[0] > -1 && cor3[1] > -1 && cor3[0] < 128 && cor3[1] < 128) {
                   var Ux = potential_field[0][ob2wor([x.pos[0], x.pos[1], x.pos[2] + degree], controlpoint[0])[0]][ob2wor([x.pos[0], x.pos[1], x.pos[2] + degree], controlpoint[0])[1]] + potential_field[1][ob2wor([x.pos[0], x.pos[1], x.pos[2] + degree], controlpoint[1])[0]][ob2wor([x.pos[0], x.pos[1], x.pos[2] + degree], controlpoint[1])[1]];
@@ -131,9 +141,11 @@ function BFS() {
                   }
                 }
             }
+          }
         }
 
         if (x.pos[2] - degree >= 0) {
+          if(!collision(polygon, [x.pos[0], x.pos[1], x.pos[2] - degree], obstacle_bitlist)){
             if (fullbit[(x.pos[2] - degree)][x.pos[0]][x.pos[1]] != 256) {
               if (cor2[0] > -1 && cor2[1] > -1 && cor2[0] < 128 && cor2[1] < 128 && cor4[0] > -1 && cor4[1] > -1 && cor4[0] < 128 && cor4[1] < 128) {
                 var Ux = potential_field[0][ob2wor([x.pos[0], x.pos[1], x.pos[2] - degree], controlpoint[0])[0]][ob2wor([x.pos[0], x.pos[1], x.pos[2] - degree], controlpoint[0])[1]] + potential_field[1][ob2wor([x.pos[0], x.pos[1], x.pos[2] - degree], controlpoint[1])[0]][ob2wor([x.pos[0], x.pos[1], x.pos[2] - degree], controlpoint[1])[1]];
@@ -153,6 +165,7 @@ function BFS() {
                 }
               }
             }
+          }
         }
 
     }
@@ -160,11 +173,80 @@ function BFS() {
     console.log(success);
     console.log(open);
     console.log(Tree[Tree.length - 1]);
-    var temp = Tree[516];
+    var temp = Tree[Tree.length - 1];
+    var path = [];
     while(temp.pre){
+      path.push(temp.pos);
       temp = temp.pre;
     }
-    console.log(temp);
+    path.push(temp.pos)
+    console.log(path);
+    //console.log(pathmatrix);
+
+    for(var i = 0; i < path.length; i++){
+      pathmatrix[path[i][0]][path[i][1]] = 256;
+    }
+
+    var pathmap = d3.select("#path")
+        .attr("width", 128)
+        .attr("height", 128)
+        .attr("transform", 'translate(200, -20)');
+
+    var dot = pathmap.selectAll("rect");
+
+    for (var i = 0; i < pathmatrix.length; i++) {
+        for (var j = 0; j < pathmatrix[i].length; j++) {
+
+             if (pathmatrix[i][j] == 255) {
+                var bit = [i, j];
+                //console.log(bit);
+                dot.data([bit])
+                    .enter()
+                    .append("rect")
+                    .attr("x", function(d) {
+                        return d[0];
+                    })
+                    .attr("y", function(d) {
+                        return d[1];
+                    })
+                    .attr("width", 1)
+                    .attr("height", 1)
+                    .style("fill", 'red');
+            } else if (pathmatrix[i][j] == 256) {
+                var bit = [i, j];
+                //console.log(bit);
+                dot.data([bit])
+                    .enter()
+                    .append("rect")
+                    .attr("x", function(d) {
+                        return d[0];
+                    })
+                    .attr("y", function(d) {
+                        return d[1];
+                    })
+                    .attr("width", 1)
+                    .attr("height", 1)
+                    .style("fill", 'white');
+            } else if (pathmatrix[i][j] == 254) {
+                //console.log(bitmatrix[i][j]);
+                var bit = [i, j];
+                //console.log(bit);
+                dot.data([bit])
+                    .enter()
+                    .append("rect")
+                    .attr("x", function(d) {
+                        return d[0];
+                    })
+                    .attr("y", function(d) {
+                        return d[1];
+                    })
+                    .attr("width", 1)
+                    .attr("height", 1)
+                    .style('fill', "green");
+            }
+        }
+    }
+
 }
 
 
@@ -203,7 +285,7 @@ function collision(robot, ori, obstacles){
       //bitmatrix
       var collision = false;
       var wor_robot = [];
-      console.log("collision");
+      //console.log("collision");
       for(var i = 0; i < robot.length; i++){
         wor_robot[i] = [];
         for(var j = 0; j < robot[i].length; j++){
@@ -211,7 +293,7 @@ function collision(robot, ori, obstacles){
           wor_robot[i][j] = x;
         }
       }
-      console.log(obstacles);
+      //console.log(obstacles);
 
       var robot_vecter = [];
       var obstacle_vecter = [];
@@ -222,11 +304,11 @@ function collision(robot, ori, obstacles){
               robot_vecter.push([wor_robot[i][j+1][0]-wor_robot[i][j][0], wor_robot[i][j+1][1]-wor_robot[i][j][1], wor_robot[i][j], wor_robot[i][j+1]]);
             }
             else{
-              robot_vecter.push([wor_robot[i][0][0]-wor_robot[i][j][0], wor_robot[i][0][1]-wor_robot[i][j][1], wor_robot[i][j], wor_robot[i][j+1]]);
+              robot_vecter.push([wor_robot[i][0][0]-wor_robot[i][j][0], wor_robot[i][0][1]-wor_robot[i][j][1], wor_robot[i][j], wor_robot[i][0]]);
             }
           }
       }
-      console.log(robot_vecter);
+      //console.log(robot_vecter);
 
       for(var i = 0; i < obstacles.length; i++){
         for(var j = 0; j < obstacles[i].length; j++){
@@ -241,16 +323,26 @@ function collision(robot, ori, obstacles){
           }
         }
       }
-      console.log(obstacle_vecter);
+      //console.log(obstacle_vecter);
 
       for(var i = 0; i < robot_vecter.length; i++){
         var p1 = robot_vecter[i][2], p2 = robot_vecter[i][3];
-        var v12 = [robot_vecter[i][0], robot_vecter[i][1]];
+        var v12 = [p2[0] - p1[0], p2[1] - p2[1]];
         for(var j = 0; j < obstacle_vecter.length; j++){
           var p3 = obstacle_vecter[j][2], p4 = obstacle_vecter[j][3];
-          var v13 = [p3[0] - p1[0], p3[1] - p1[1]], v14 = [p4[0] - p1[0], p4[1] - p1[1]];
+          var v13 = [p3.x - p1[0], p3.y - p1[1]], v14 = [p4.x - p1[0], p4.y - p1[1]];
+          var v34 = [p4.x - p3.x, p4.y - p3.y], v31 = [p1[0] - p3.x, p1[1] - p3.y], v32 = [p2[0] - p3.x, p2[1] - p3.y];
 
 
+          if(((-1*v12[1]*v13[0]+v12[0]*v13[1])*(-1*v12[1]*v14[0]+v12[0]*v14[1])) < 0){
+              if(((-1*v34[1]*v31[0] + v34[0] * v31[1]) * (-1*v34[1]*v32[0] + v34[0] * v32[1])) < 0){
+                //console.log("collision");
+                collision = true;
+                break;
+              }
+          }
         }
       }
+      //console.log(collision);
+      return collision;
 }
